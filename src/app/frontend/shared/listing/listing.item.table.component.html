@@ -1,0 +1,21 @@
+<td>
+  <span class="align-middle">
+    {{ item.getTitle() }}
+    <span class="float-right" ngPreserveWhitespaces>
+      <span *ngIf="item.isAvailable">
+        <fa-icon [icon]="iconAvailable" tooltip="This is already downloaded and ready to watch"></fa-icon>
+      </span>
+      <span *ngIf="item.type == 'file'">
+        <span *ngIf="item.getHistory()">
+          <fa-icon [icon]="item.isWatchOngoing ? iconPlayed : iconFinished"
+                   [ngStyle]="{'color': daysSinceWatched >= 14 && '#bdbdbd' || ''}" aria-hidden="true"
+                   [tooltip]="(item.isWatchOngoing && ((item.viewState.currentTime | duration) + ' of ' + (item.viewState.length | duration) + ' ') || '') + 'on ' + item.getHistory().date"></fa-icon>
+        </span>
+        <span><app-streambutton (onStreamReady)="onStreamReady()" [item]="item"></app-streambutton></span>
+      </span>
+      <span *ngIf="item.type == 'folder'">
+        <button class="btn btn-open btn-secondary" type="button" (click)="onOpen.emit(item)">Open</button>
+      </span>
+    </span>
+  </span>
+</td>

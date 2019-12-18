@@ -1,0 +1,11 @@
+<div *ngIf="listing">
+  <div class="row" *ngIf="contentType == 'tvshows' || contentType == 'movies'">
+    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let item of listing">
+      <app-item-cover [item]="item" [pathPrefix]="pathPrefix"></app-item-cover>
+    </div>
+  </div>
+
+  <table class="table table-sm" *ngIf="contentType == 'episodes' || contentType == 'movie' || contentType == 'seasons' || contentType == '' || contentType == null">
+    <tr *ngFor="let item of listing" app-item-table [item]="item" [pathPrefix]="pathPrefix" (onOpen)="onOpen.emit(item)" [ngClass]="{'table-success': item.id == highlightItemId}"></tr>
+  </table>
+</div>

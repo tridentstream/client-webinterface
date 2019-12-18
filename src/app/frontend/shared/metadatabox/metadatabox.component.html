@@ -1,0 +1,38 @@
+<div class="row" #metadataBox [style.height.px]="divHeight">
+  <div class="col">
+    <img [style.max-height.px]="divHeight"
+          (load)="calcCoverHeight()"
+          [src]="(metadata && metadata.cover) || (oldMetadata && oldMetadata.cover) || 'assets/images/placeholder.jpg'"
+          class="img-fluid"
+          style="margin: 0 auto; width: 100%;" />
+  </div>
+
+  <div class="col">
+    <h4>Plot</h4>
+    <p>{{ metadata.plot }}</p>
+    <h4>Info</h4>
+
+    <div *ngIf="metadata.genres">
+      <b>Genres: </b>
+      <span *ngFor="let genre of metadata.genres; let last = last">{{ genre }}<span *ngIf="!last">, </span></span>
+    </div>
+
+    <div *ngIf="metadata.rating">
+      <b>Rating:</b> {{ metadata.rating | number:'1.1' }} / 10 - {{ metadata.votes | number }} votes.
+    </div>
+
+    <h4>External Links</h4>
+    <div *ngFor="let m of item.displayMetadatas">
+      <div *ngIf="m.type === 'metadata_imdb'">
+        <a [href]="m.getLink()" target="_blank"><img src="assets/images/imdb.png" /></a>
+      </div>
+      <div *ngIf="m.type === 'metadata_mal'">
+        <a [href]="m.getLink()" target="_blank"><img src="assets/images/mal.png" /></a>
+      </div>
+      <div *ngIf="m.type === 'metadata_thetvdb'">
+        <a [href]="m.getLink()" target="_blank"><img src="assets/images/thetvdb.png" /></a>
+      </div>
+    </div>
+    <div *ngIf="loading"><fa-icon [icon]="iconSpinner" [pulse]="true"></fa-icon></div>
+  </div>
+</div>

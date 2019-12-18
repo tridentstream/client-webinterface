@@ -1,0 +1,7 @@
+<p *ngIf="plugin.id && pluginBase.attributes['commands']">
+  <button class="btn btn-sm btn-info mr-1"
+          [tooltip]="command['description']"
+          placement="right"
+          *ngFor="let command of pluginBase.attributes['commands']"
+          (click)="executeCommand(command)">{{ command['display_name'] }}</button>
+</p>

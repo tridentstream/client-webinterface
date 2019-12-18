@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>User settings</h1>
+      <h3>Info</h3>
+      <div>
+        <a *ngIf="!tokenShown" href (click)="showToken()"><p>Show you authentication token</p></a>
+        <p *ngIf="tokenShown">Token: <span>{{ userInfo.attributes['token'] }}</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h3>Accessible services</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let service of externalServices">
+            <td>{{ service.attributes['display_name'] }}</td>
+            <td>{{ service.links['self'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="card mb-2">
+  <div class="card-header" (click)="expandPlugin()">
+    <span ngPreserveWhitespaces>
+      <span *ngIf="plugin.id">{{ plugin.attributes['display_name'] }} // </span>{{ plugin.id || 'Unsaved' }} //
+      {{ plugin.template.attributes['display_name'] }}<span *ngIf="showPluginName || showPluginType"> // </span>
+      <span *ngIf="showPluginName">{{ plugin.pluginBase.attributes['plugin_name'] }}</span><span *ngIf="showPluginType">/{{ plugin.pluginBase.attributes['plugin_type'] }}</span>
+    </span>
+    <span class="float-right">
+      <ng-content></ng-content>
+      <fa-icon [icon]="iconExpand"></fa-icon>
+    </span>
+  </div>
+  <div class="card-body" *ngIf="expanded">
+    <p class="card-text" *ngIf="plugin.plugin">
+      <app-plugin-commands [plugin]="plugin.plugin" [pluginBase]="plugin.pluginBase"></app-plugin-commands>
+    </p>
+    <p class="card-text">
+      <app-jsonschema [schema]="schema"
+                      [uiSchema]="uiSchema"
+                      [initialData]="plugin.attributes['config']"
+                      (onSave)="savePlugin.emit($event)"
+                      [showDelete]="true"
+                      (onDelete)="deletePlugin.emit(null)">
+      </app-jsonschema>
+    </p>
+  </div>
+</div>

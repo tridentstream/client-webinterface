@@ -1,0 +1,21 @@
+<h3 *ngIf="!editingName">{{ section.attributes['config']['display_name'] }}</h3>
+
+<form #f="ngForm" (ngSubmit)="onSetName(f)" ngNativeValidate *ngIf="editingName">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Name" [(ngModel)]="initialDisplayName" name="name" required>
+    <div class="input-group-append">
+      <button [disabled]="setNameLoading" class="btn btn-outline-primary" type="submit">Set name
+        <span *ngIf="setNameLoading" ngPreserveWhitespaces> <fa-icon [icon]="iconLoading" [pulse]="true"></fa-icon></span>
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="mb-2">
+  <button class="btn btn-success mr-1" (click)="addNewSection.emit(null)">Add new section</button>
+  <button (click)="editName()" class="btn btn-info mr-1">
+    <span *ngIf="editingName">Cancel edit name</span>
+    <span *ngIf="!editingName">Edit name</span>
+  </button>
+  <button class="btn btn-warning" (click)="commitChanges.emit(null)" tooltip="When you are done changing settings for this section then click here to make the changes live">Commit changes</button>
+</div>

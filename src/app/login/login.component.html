@@ -1,0 +1,15 @@
+<!-- TODO: fix box corners -->
+
+<div class="text-center form-box">
+  <form class="form-signin" (ngSubmit)="doLogin()" #loginForm="ngForm">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <div class="alert alert-danger" role="alert" *ngIf="failed">Login failed.</div>
+    <label *ngIf="showUrl" for="inputURL" class="sr-only">URL</label>
+    <input *ngIf="showUrl" type="text" id="inputURL" class="form-control" placeholder="URL" [(ngModel)]="model.url" name="url" required autofocus>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Username" [(ngModel)]="model.username" name="username" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" [(ngModel)]="model.password" name="password" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.valid || loading">Sign in</button>
+  </form>
+</div>

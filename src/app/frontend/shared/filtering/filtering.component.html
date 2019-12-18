@@ -1,0 +1,87 @@
+<form>
+  <div class="row mb-2">
+    <div class="col-sm-5">
+      <input *ngIf="filterInfo.hasField('q')" type="text" class="form-control" id="inputQ" name="q" placeholder="Search text" [(ngModel)]="filter['q']">
+    </div>
+
+    <div class="col-sm-3">
+      <span *ngIf="filterInfo.getOrderings().length > 0">
+        <ng-select [(ngModel)]="filter['o']"
+                   [items]="filterInfo.getOrderings()"
+                   placeholder="Select Ordering"
+                   name="ordering">
+        </ng-select>
+      </span>
+    </div>
+
+    <div class="col-sm-4" ngPreserveWhitespaces>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Search</button>
+      <button class="btn" [ngClass]="{'btn-outline-secondary': !showAdvancedSearch, 'btn-success': showAdvancedSearch}" (click)="toggleAdvancedSearch()">Advanced search</button>
+      <button class="btn btn-secondary" (click)="doClear()">Clear</button>
+
+    </div>
+  </div>
+
+  <!-- MyAnimeList Start -->
+  <div class="row mb-2" *ngIf="showAdvancedSearch && filterInfo.hasField('metadata_mal__genre')">
+    <div class="col-sm-12" ngPreserveWhitespaces>
+      <span *ngFor="let genre of filterInfo.getChoices('metadata_mal__genre')">
+        <button (click)="toggle('metadata_mal__genre', genre)"
+                class="btn btn-sm mb-1"
+                type="button"
+                [ngClass]="{'btn-info': !isActive('metadata_mal__genre', genre), 'btn-success': isActive('metadata_mal__genre', genre)}">{{ genre }}</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="row mb-2" *ngIf="showAdvancedSearch && filterInfo.hasField('metadata_mal__anime_type')">
+    <div class="col-sm-12" ngPreserveWhitespaces>
+      <span *ngFor="let animeType of filterInfo.getChoices('metadata_mal__anime_type')">
+        <button (click)="toggle('metadata_mal__anime_type', animeType)"
+                class="btn btn-sm mb-1"
+                type="button"
+                [ngClass]="{'btn-info': !isActive('metadata_mal__anime_type', animeType), 'btn-success': isActive('metadata_mal__anime_type', animeType)}">{{ animeType }}</button>
+      </span>
+    </div>
+  </div>
+  <!-- MyAnimeList End -->
+
+  <!-- IMDb Start -->
+  <div class="row mb-2" *ngIf="showAdvancedSearch">
+    <div class="col-sm-3">
+      <span *ngIf="filterInfo.hasField('metadata_imdb__primary_language')">
+        <ng-select [(ngModel)]="filter['metadata_imdb__primary_language']"
+                   name="metadata_imdb__primary_language"
+                   placeholder="Select Language">
+          <ng-option *ngFor="let language of filterInfo.getChoices('metadata_imdb__primary_language')" [value]="language">{{ language }}</ng-option>
+        </ng-select>
+      </span>
+    </div>
+  </div>
+
+  <div class="row mb-2" *ngIf="showAdvancedSearch && filterInfo.hasField('metadata_imdb__genre')">
+    <div class="col-sm-12" ngPreserveWhitespaces>
+      <span *ngFor="let genre of filterInfo.getChoices('metadata_imdb__genre')">
+        <button (click)="toggle('metadata_imdb__genre', genre)"
+                class="btn btn-sm mb-1"
+                type="button"
+                [ngClass]="{'btn-outline-secondary': !isActive('metadata_imdb__genre', genre), 'btn-success': isActive('metadata_imdb__genre', genre)}">{{ genre }}</button>
+      </span>
+    </div>
+  </div>
+  <!-- IMDb End -->
+
+  <!-- Store Oriented Filter Start -->
+  <div class="row" *ngIf="showAdvancedSearch && filterInfo.hasField('tags')">
+    <div class="col-sm-12" ngPreserveWhitespaces>
+      <span *ngFor="let tag of filterInfo.getChoices('tags')">
+        <button (click)="toggle('tags', tag)"
+                class="btn btn-sm mb-1"
+                type="button"
+                [ngClass]="{'btn-info': !isActive('tags', tag), 'btn-success': isActive('tags', tag)}">{{ tag }}</button>
+      </span>
+    </div>
+  </div>
+  <!-- Store Oriented Filter End -->
+
+</form>

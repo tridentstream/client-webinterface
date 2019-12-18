@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1>{{ title }}</h1>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="parent && (contentType == 'movie' || contentType == 'episodes' || contentType == 'seasons')">
+    <div class="col-md-12 col-lg-6">
+      <app-metadatabox [item]="parent" (onTitle)="onTitle($event)"></app-metadatabox>
+
+      <div *ngIf="contentType == 'seasons'">
+        <h3>Seasons</h3>
+        <div *ngIf="!loading && rootDoc">
+          <app-listingbox [doc]="rootDoc" (onOpen)="selectSeasonItem($event)" [itemsPerPage]="itemsPerPage" [highlightItemId]="seasonItemId"></app-listingbox>
+        </div>
+        <div *ngIf="loading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
+      </div>
+    </div>
+
+    <div class="col-md-12 col-lg-6">
+      <h3>Streamables</h3>
+      <div *ngIf="rootDoc && (contentType == 'movie' || contentType == 'episodes')">
+        <div *ngIf="!loading && rootDoc">
+          <app-listingbox [doc]="rootDoc" [itemsPerPage]="itemsPerPage"></app-listingbox>
+        </div>
+        <div *ngIf="loading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
+      </div>
+
+      <div *ngIf="contentType == 'seasons'">
+        <div *ngIf="!episodeLoading && episodeDoc">
+          <app-listingbox [doc]="episodeDoc" [paginateParam]="'e_page'" [itemsPerPage]="itemsPerPage"></app-listingbox>
+        </div>
+        <div *ngIf="episodeLoading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
+      </div>
+
+      <div *ngIf="contentType == 'movie'">
+        <h4>Related Streamables</h4>
+        <div *ngIf="relatedLoading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
+        <app-listing *ngIf="!relatedLoading && relatedListing.length > 0" [listing]="relatedListing"></app-listing>
+        <div *ngIf="!relatedLoading && relatedListing.length == 0" class="text-center row">
+          <div class="col">
+            No related streamables found <fa-icon [icon]="iconSad"></fa-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="contentType == 'movies' || contentType == 'tvshows' || contentType == '' || contentType == null">
+    <div class="container" *ngIf="filterInfo">
+      <app-filtering [filterInfo]="filterInfo"></app-filtering>
+    </div>
+    <div *ngIf="!loading && rootDoc">
+      <app-listingbox [doc]="rootDoc" [pathPrefix]="pathPrefix" [itemsPerPage]="itemsPerPage"></app-listingbox>
+    </div>
+    <div *ngIf="loading" class="row">
+      <app-spinner></app-spinner>
+    </div>
+  </div>
+</div>

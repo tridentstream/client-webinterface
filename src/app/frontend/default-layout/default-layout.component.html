@@ -1,0 +1,9 @@
+<header>
+  <app-navbar></app-navbar>
+</header>
+<main>
+  <div *ngIf="playerService.showPlayer" class="border-bottom shadow-sm pb-3 pl-2 pr-2 mb-2">
+    <app-player></app-player>
+  </div>
+  <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1>Plugins</h1>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div class="mb-2">
+          <button class="btn btn-success mr-1" (click)="showAddPluginModal()">Add new plugin</button>
+          <button class="btn btn-danger mr-1" (click)="reloadAllPlugins()">Reload all plugins</button>
+        </div>
+
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Plugin type</th>
+              <th>Plugin name</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let plugin of plugins">
+              <td>{{ plugin.id }}</td>
+              <td>{{ plugin.attributes['plugin_type'] }}</td>
+              <td>{{ plugin.attributes['plugin_name'] }}</td>
+              <td>{{ plugin.attributes['name'] }}</td>
+              <td class="text-right" style="white-space: nowrap;">
+                <button *ngIf="plugin.attributes['enabled']" class="btn btn-warning btn-sm mr-1" role="button" (click)="disablePlugin(plugin)">Disable</button>
+                <button *ngIf="!plugin.attributes['enabled']" class="btn btn-success btn-sm mr-1" role="button" (click)="enablePlugin(plugin)">Enable</button>
+                <button class="btn btn-primary btn-sm" role="button" (click)="configurePlugin(plugin)">Configure</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <ng-container *ngIf="!loading && selectedPlugin">
+        <h3>Configuration for {{ pluginName }}</h3>
+        <form #pluginForm="ngForm">
+          <div class="form-group" [ngClass]="{'has-error': !pluginForm.form.controls['inputName']?.valid}">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Name" name="inputName" [(ngModel)]="pluginName" pattern="^[a-z0-9]+(?:[-_][a-z0-9]+)*$">
+          </div>
+        </form>
+        <app-jsonschema [schema]="schema"
+                        [uiSchema]="uiSchema"
+                        [initialData]="formData"
+                        (onSave)="savePlugin(selectedPlugin, $event, pluginName)"
+                        [showDelete]="true"
+                        (onDelete)="deletePlugin(selectedPlugin)">
+        </app-jsonschema>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<div bsModal #addPluginModal="bs-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Add new plugin</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="addPluginModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" *ngIf="pluginBases">
+          <table class="table table-striped">
+            <thead>
+              <th>Plugin name</th>
+              <th>Plugin type</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pluginBase of pluginBases">
+                <td >{{ pluginBase.attributes['plugin_name'] }}</td>
+                <td >{{ pluginBase.attributes['plugin_type'] }}</td>
+                <td>
+                  <button class="btn btn-success btn-sm" (click)="addPlugin(pluginBase)">Add</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

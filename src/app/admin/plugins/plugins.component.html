@@ -1,0 +1,200 @@
+<!-- Add new sections / store - skip for now?
+Remove / autoset sections within each plugin (add support for multiple sections)
+Probably waiting for https://github.com/angular/material2/issues/14148#issuecomment-439020864
+-->
+
+<!-- TODO: Better serverside errors from https://github.com/mozilla-services/react-jsonschema-form/pull/1389 -->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1>Sections</h1>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading" CdkDropListGroup>
+        <div *ngFor="let section of sections">
+          <app-plugin-sectionheader [section]="section.plugin"
+                                    (addNewSection)="showSimpleAdminPluginModal(section, null, 'service', 'sections')"
+                                    (commitChanges)="commitChanges(section.plugin)">
+          </app-plugin-sectionheader>
+          <div cdkDropList
+               (cdkDropListDropped)="moveSectionItem($event, sections)"
+               [cdkDropListData]="section">
+            <div *ngFor="let plugin of section.sections" cdkDrag>
+              <app-simpleadmin-plugin [initialExpanded]="!plugin.id"
+                                      [plugin]="plugin"
+                                      [hideSections]="true"
+                                      (savePlugin)="saveSectionPlugin(section, plugin, $event)"
+                                      (deletePlugin)="deleteSectionPlugin(section, plugin)">
+                <fa-icon class="mr-2" [icon]="iconDraggable" cdkDragHandle></fa-icon>
+              </app-simpleadmin-plugin>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3>Inputs</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div class="mb-2">
+          <button class="btn btn-success mr-1" (click)="showSimpleAdminPluginModal(null, inputs, 'input')">Add new input</button>
+        </div>
+        <app-simpleadmin-plugin [plugin]="plugin"
+                                [showPluginName]="true"
+                                [initialExpanded]="!plugin.id"
+                                (savePlugin)="savePlugin(plugin, $event)"
+                                (deletePlugin)="deletePlugin(inputs, plugin)"
+                                *ngFor="let plugin of inputs">
+        </app-simpleadmin-plugin>
+      </div>
+
+      <h3 class="mt-4">Remote filesystems</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div *ngFor="let rfs of remotefilesystems">
+          <h4>{{ rfs.attributes['name'] }}</h4>
+
+          <div class="input-group" *ngFor="let plugin of allInputs">
+            <div class="custom-control custom-switch">
+              <input type="checkbox"
+                     class="custom-control-input"
+                     [name]="'inputSwitch' + plugin.id + '-' + rfs.id"
+                     [attr.id]="'inputSwitch' + plugin.id + '-' + rfs.id"
+                     [ngModel]="rfsCanAccessInput(rfs, plugin)"
+                     (ngModelChange)="rfsSetInputAccess(rfs, plugin)">
+              <label class="custom-control-label" [attr.for]="'inputSwitch' + plugin.id + '-' + rfs.id">({{ plugin.id }}) {{ plugin.attributes['config']['display_name'] || plugin.attributes['name'] }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h1>Store</h1>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <ng-container *ngFor="let store of stores" CdkDropListGroup>
+            <app-plugin-sectionheader [section]="store.plugin"
+                                      (addNewSection)="showSimpleAdminPluginModal(store, null, 'service', 'store')"
+                                      (commitChanges)="commitChanges(store.plugin)">
+            </app-plugin-sectionheader>
+            <div cdkDropList (cdkDropListDropped)="moveSectionItem($event, store)">
+              <div *ngFor="let plugin of store.sections" cdkDrag>
+                <app-simpleadmin-plugin [initialExpanded]="!plugin.id"
+                                        [plugin]="plugin"
+                                        [hideSections]="true"
+                                        (savePlugin)="saveSectionPlugin(store, plugin, $event)"
+                                        (deletePlugin)="deleteSectionPlugin(store, plugin)">
+                  <fa-icon class="mr-2" [icon]="iconDraggable" cdkDragHandle></fa-icon>
+                </app-simpleadmin-plugin>
+              </div>
+            </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Searchers</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div class="mb-2">
+          <button class="btn btn-success mr-1" (click)="showSimpleAdminPluginModal(null, searchers, 'searcher')">Add new searcher</button>
+        </div>
+        <app-simpleadmin-plugin [plugin]="plugin"
+                                [showPluginName]="true"
+                                [initialExpanded]="!plugin.id"
+                                (savePlugin)="savePlugin(plugin, $event)"
+                                (deletePlugin)="deletePlugin(searchers, plugin)"
+                                *ngFor="let plugin of searchers">
+        </app-simpleadmin-plugin>
+      </div>
+
+      <h3 class="mt-4">Remote searchers</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div *ngFor="let remoteSearcher of remotesearchers">
+          <h4>{{ remoteSearcher.attributes['name'] }}</h4>
+
+          <div class="input-group" *ngFor="let plugin of allSearchers">
+            <div class="custom-control custom-switch">
+              <input type="checkbox"
+                     class="custom-control-input"
+                     [name]="'remoteSearcherSwitch' + plugin.id + '-' + remoteSearcher.id"
+                     [attr.id]="'remoteSearcherSwitch' + plugin.id + '-' + remoteSearcher.id"
+                     [ngModel]="remoteSearcherCanAccessInput(remoteSearcher, plugin)"
+                     (ngModelChange)="remoteSearcherSetInputAccess(remoteSearcher, plugin)">
+              <label class="custom-control-label" [attr.for]="'remoteSearcherSwitch' + plugin.id + '-' + remoteSearcher.id">({{ plugin.id }}) {{ plugin.attributes['config']['display_name'] || plugin.attributes['name'] }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h1>Other plugins</h1>
+      <p>Other plugins can be metadata or a bittorrent client</p>
+      <app-spinner *ngIf="loading"></app-spinner>
+
+      <div *ngIf="!loading">
+        <div class="mb-2">
+          <button class="btn btn-success mr-1" (click)="showSimpleAdminPluginModal(null, others, othersPluginType)">Add new plugin</button>
+        </div>
+        <app-simpleadmin-plugin [plugin]="plugin"
+                                [showPluginName]="true"
+                                [initialExpanded]="!plugin.id"
+                                (savePlugin)="savePlugin(plugin, $event)"
+                                (deletePlugin)="deletePlugin(others, plugin)"
+                                *ngFor="let plugin of others">
+        </app-simpleadmin-plugin>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+
+<div bsModal #addPluginModal="bs-modal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Add new plugin</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addPluginModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="modalTemplates">
+        <table class="table table-striped">
+          <thead>
+            <th>Template ID</th>
+            <th>Name</th>
+            <th *ngIf="modalFilteredOn.indexOf('plugin_name') == -1">Plugin name</th>
+            <th *ngIf="modalFilteredOn.indexOf('plugin_type') == -1">Plugin type</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let template of modalTemplates">
+              <td>{{ template.attributes['template_id'] }}</td>
+              <td>{{ template.attributes['display_name'] }}</td>
+              <td *ngIf="modalFilteredOn.indexOf('plugin_name') == -1">{{ template.pluginBase.attributes['plugin_name'] }}</td>
+              <td *ngIf="modalFilteredOn.indexOf('plugin_type') == -1">{{ template.pluginBase.attributes['plugin_type'] }}</td>
+              <td>
+                <button class="btn btn-success btn-sm" (click)="addSimplePluginTemplate(template)">Add</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

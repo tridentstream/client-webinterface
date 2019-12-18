@@ -1,0 +1,22 @@
+.covertitle {
+  height: 100%;
+  cursor: pointer;
+}
+.covertitle .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  margin-bottom: 0px;
+}
+.covertitle .year {
+  margin-bottom: 0px;
+  color: grey;
+}
+
+.btn-open {
+  padding: .25rem .4rem;
+  font-size: .875rem;
+  line-height: .9;
+  border-radius: .2rem;
+}

@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <a class="navbar-brand" [routerLink]="['/']">Tridentstream</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item dropdown" *ngFor="let listingService of listingServices" dropdown>
+        <a href dropdownToggle class="nav-link dropdown-toggle" (click)="false">
+          {{ listingService.name }} <span class="caret"></span>
+        </a>
+
+        <ul *dropdownMenu class="dropdown-menu">
+          <li role="menuitem" *ngFor="let folder of listingService.entries">
+            <a class="dropdown-item" [routerLink]="['/', listingService.url].concat(folder.id.split('/'))">{{ folder.attributes['display_name'] || folder.attributes.name }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-3">
+      <li class="nav-item dropdown" dropdown *ngIf="tridentstream.playerService">
+        <a href dropdownToggle class="nav-link dropdown-toggle" (click)="false">
+          <fa-icon [icon]="playerIcon" [ngStyle]="{color: tridentstream.playerService.connected && 'green' || 'red'}"></fa-icon>
+          Players<span class="caret"></span>
+        </a>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
+
+          <li role="menuitem" *ngFor="let player of tridentstream.playerService.getPlayers()">
+            <a class="dropdown-item" href (click)="showPlayer(player)">{{ player.name }}</a>
+          </li>
+
+          <li *ngIf="tridentstream.playerService.getPlayers().length == 0">
+            <i class="dropdown-item">No players found</i>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown" *ngFor="let configService of configServices">
+        <a [routerLink]="['/', configService.url]" class="nav-link">{{ configService.name }}</a>
+      </li>
+
+      <li class="nav-item dropdown" dropdown>
+        <a href dropdownToggle class="nav-link dropdown-toggle" (click)="false">
+          <fa-icon [icon]="userIcon"></fa-icon>
+          {{ tridentstream.userInfo.attributes['username'] }} <span class="caret"></span>
+        </a>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
+          <li role="menuitem"><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
+          <li role="menuitem"><a class="dropdown-item" [routerLink]="['/logout']">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

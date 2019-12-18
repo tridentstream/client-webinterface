@@ -1,0 +1,20 @@
+<div *ngIf="listing">
+  <app-listing *ngIf="listing.length > 0"
+              [listing]="listing"
+              [contentType]="contentType"
+              [pathPrefix]="pathPrefix"
+              [highlightItemId]="highlightItemId"
+              (onOpen)="onOpen($event)">
+  </app-listing>
+  <div *ngIf="listing.length == 0" class="text-center row">
+    <div class="col-xs-12">
+      Nothing found...
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="totalItems > itemsPerPage">
+  <app-paginate [totalItems]="totalItems" [maxSize]="11"
+                [itemsPerPage]="itemsPerPage" class="justify-content-center">
+  </app-paginate>
+</div>

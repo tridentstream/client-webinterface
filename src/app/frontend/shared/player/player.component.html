@@ -1,0 +1,68 @@
+<div class="d-flex flex-column" style="position: relative">
+  <div style="position: absolute; top: 0px; right: 5px;">
+    <button class="btn btn-info btn-sm" (click)="close()"><fa-icon [icon]="iconHide"></fa-icon></button>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <h4>Player - {{ player.name }}</h4>
+
+  </div>
+
+  <div class="d-flex justify-content-center mb-1">
+    {{ player.values.get('title') || 'No title found' }}
+  </div>
+
+  <div class="d-flex justify-content-center mb-2">
+    <div ngPreserveWhitespaces>
+      <button type="button" class="btn btn-dark" (click)="command('previous')">
+        <fa-icon [icon]="iconPrevious"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="changeSpeed(-1)">
+        <fa-icon [icon]="iconBackward"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="changeState('stopped')">
+        <fa-icon [icon]="iconStop"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="setValue('speed', 0)">
+        <fa-icon [icon]="iconPause"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="setValue('speed', 1)">
+        <fa-icon [icon]="iconPlay"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="changeSpeed(1)">
+        <fa-icon [icon]="iconForward"></fa-icon>
+      </button>
+
+      <button type="button" class="btn btn-dark" (click)="command('next')">
+        <fa-icon [icon]="iconNext"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mb-2" *ngIf="player.isPlaying">
+    <div class="mr-2" style="width: 300px;">
+      Audio:
+      <ng-select [clearable]="false" [(ngModel)]="currentAudioTrack">
+        <ng-option *ngFor="let audioTrack of audioTracks" [value]="audioTrack[0]">({{ audioTrack[0] }}) {{ audioTrack[1] }}</ng-option>
+      </ng-select>
+    </div>
+    <div style="width: 300px;">
+      Subtitles:
+      <ng-select [clearable]="false" [(ngModel)]="currentSubtitleTrack">
+        <ng-option [value]="-1">No subtitles</ng-option>
+        <ng-option *ngFor="let subtitleTrack of subtitleTracks" [value]="subtitleTrack[0]">({{ subtitleTrack[0] }}) {{ subtitleTrack[1] }}</ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <div *ngIf="player.isPlaying">
+    <progressbar type="warning" (mousemove)="setTooltipTime($event)" (mouseenter)="showTooltipTime = true" (mouseleave)="showTooltipTime = false" (click)="seek($event)" [max]="totalTime" [value]="currentTime">
+      <span class="text-nowrap text-dark" >{{ currentTime | secondsToTimestamp }}<span *ngIf="showTooltipTime"> -> {{ tooltipTime | secondsToTimestamp }}</span> / {{ totalTime | secondsToTimestamp }}</span>
+    </progressbar>
+  </div>
+</div>

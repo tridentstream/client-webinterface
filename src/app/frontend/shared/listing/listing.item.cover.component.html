@@ -1,0 +1,6 @@
+<a [routerLink]="['/' + pathPrefix].concat(item.id.split('/'))">
+  <div class="covertitle">
+    <img class="cover img-fluid" [src]="metadata.cover || 'assets/images/placeholder.jpg'">
+    <p title="{{ metadata.title }}" class="title">{{ metadata.title || defaultMetadata.title }}</p>
+  </div>
+</a>

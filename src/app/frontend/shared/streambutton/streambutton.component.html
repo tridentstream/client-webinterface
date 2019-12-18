@@ -1,0 +1,58 @@
+<div class="btn-group btn-group-xs" dropdown>
+  <button type="button" class="btn btn-sm btn-warning" *ngIf="state == 'loading'">
+    Loading <fa-icon [icon]="iconLoading" [pulse]="true"></fa-icon>
+  </button>
+
+  <button (click)="doAction(tridentstream.defaultPlaybackDevice)" type="button" class="btn btn-sm btn-outline-secondary" *ngIf="state == 'defaultaction' && tridentstream.defaultPlaybackDevice">
+    <div>{{ tridentstream.defaultPlaybackDevice.getName() }}</div>
+  </button>
+
+  <button type="button" class="btn btn-sm btn-outline-secondary" *ngIf="state == 'defaultaction' && !tridentstream.defaultPlaybackDevice">
+    <div>No default found</div>
+  </button>
+
+  <a [href]="sanitizer.bypassSecurityTrustUrl(streamResourceObject.links['stream'])" type="button" class="btn btn-sm btn-success" *ngIf="state == 'ready'">
+    {{ action.getName() }} ready
+  </a>
+
+  <a type="button" class="btn btn-sm btn-success" *ngIf="state == 'loaded'">
+    Playing on {{ action.getName() }}
+  </a>
+
+  <a type="button" class="btn btn-sm btn-danger" *ngIf="state == 'failed'">
+    Failed to stream
+  </a>
+
+  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" dropdownToggle>
+    <span class="caret"></span>
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu role="menu">
+    <li role="menuitem" class="menuitem" *ngFor="let action of tridentstream.playbackDevices">
+      <a class="dropdown-item" (click)="doAction(action)">{{ action.getName() }}</a>
+    </li>
+  </ul>
+</div>
+
+<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="" *ngIf="viewState">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button (click)="doResume(action, viewState)" type="button" class="btn btn-primary btn-lg btn-block">
+            <fa-icon [icon]="iconPlay"></fa-icon>
+            Continue from {{ viewState.state['current_time'] | secondsToTimestamp }}
+          </button>
+          <button  (click)="doPlay(action)" type="button" class="btn btn-info btn-lg btn-block">
+            <fa-icon [icon]="iconClose"></fa-icon>
+            Play from beginning
+          </button>
+          <button (click)="resumeModal.hide()" type="button" class="btn btn-danger btn-lg btn-block">
+            <fa-icon [icon]="iconRestart"></fa-icon>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

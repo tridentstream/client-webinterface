@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~ngx-toastr/toastr.css';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+/* workaround for bootstrap native toasters */
+#toast-container > div {
+  opacity:1;
+}
+
+.jsonschema .fa-times:before {
+  content: "Remove";
+}
+
+.jsonschema .fa-plus:before {
+  content: "Add";
+}
+
+.jsonschema .fa-arrow-up:before {
+  content: "Up";
+}
+
+.jsonschema .fa-arrow-down:before {
+  content: "Down";
+}

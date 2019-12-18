@@ -1,0 +1,29 @@
+<ul class="pagination" *ngIf="this.currentPage != null" [ngClass]="classMap">
+  <li class="page-item" [class.disabled]="currentPage == 1">
+    <a class="page-link" [routerLink]="[]" [queryParams]="firstPage">First</a>
+  </li>
+
+  <li class="page-item" [class.disabled]="currentPage == 1">
+    <a class="page-link" [routerLink]="[]" [queryParams]="previousPage">Previous</a>
+  </li>
+
+  <li class="page-item" *ngIf="boundaryPreviousPage !== null">
+    <a class="page-link" [routerLink]="[]" [queryParams]="boundaryPreviousPage">...</a>
+  </li>
+
+  <li class="page-item" *ngFor="let page of pageRange" [class.active]="page.page == currentPage">
+    <a class="page-link" [routerLink]="[]" [queryParams]="page.queryParams">{{ page.page }}</a>
+  </li>
+
+  <li class="page-item" *ngIf="boundaryNextPage !== null">
+    <a class="page-link" [routerLink]="[]" [queryParams]="boundaryNextPage">...</a>
+  </li>
+
+  <li class="page-item" [class.disabled]="currentPage == maxPages">
+    <a class="page-link" [routerLink]="[]" [queryParams]="nextPage">Next</a>
+  </li>
+
+  <li class="page-item" [class.disabled]="currentPage == maxPages">
+    <a class="page-link" [routerLink]="[]" [queryParams]="lastPage">Last</a>
+  </li>
+</ul>
