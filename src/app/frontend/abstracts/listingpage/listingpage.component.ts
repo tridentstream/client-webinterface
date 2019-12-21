@@ -164,7 +164,7 @@ export abstract class ListingPageComponent implements OnDestroy, OnInit {
           this.episodeLoading = true;
           let queryParams = this.getQueryParams(this.route.snapshot.queryParams, 'e');
           queryParams['limit'] = this.itemsPerPage;
-          queryParams['page'] = queryParams['page'] || "1";
+          queryParams['page'] = queryParams["page"] || "1";
           this.subEpisodeDoc = item
               .getDocument(queryParams)
               .populate()

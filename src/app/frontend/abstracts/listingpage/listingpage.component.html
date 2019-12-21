@@ -29,7 +29,7 @@
 
       <div *ngIf="contentType == 'seasons'">
         <div *ngIf="!episodeLoading && episodeDoc">
-          <app-listingbox [doc]="episodeDoc" [paginateParam]="'e_page'" [itemsPerPage]="itemsPerPage"></app-listingbox>
+          <app-listingbox [doc]="episodeDoc" paginateParam="e_page" [itemsPerPage]="itemsPerPage"></app-listingbox>
         </div>
         <div *ngIf="episodeLoading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
       </div>

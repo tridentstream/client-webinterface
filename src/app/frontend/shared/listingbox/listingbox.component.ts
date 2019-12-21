@@ -55,16 +55,4 @@ export class ListingBoxComponent implements OnInit, OnChanges {
 
     this.listing = listing;
   }
-
-  navigatePage(page: number) {
-    if (page == this.currentPage)
-      return;
-
-    let params = {...this.route.snapshot.queryParams};
-    params[this.paginateParam] = page;
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params
-    });
-  }
 }

@@ -13,8 +13,8 @@
   </div>
 </div>
 
-<div class="container-fluid" *ngIf="totalItems > itemsPerPage">
-  <app-paginate [totalItems]="totalItems" [maxSize]="11"
+<div class="container-fluid pt-2" *ngIf="totalItems > itemsPerPage">
+  <app-paginate [totalItems]="totalItems" [maxSize]="11" [queryParam]="paginateParam"
                 [itemsPerPage]="itemsPerPage" class="justify-content-center">
   </app-paginate>
 </div>
