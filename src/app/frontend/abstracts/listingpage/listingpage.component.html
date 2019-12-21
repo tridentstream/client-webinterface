@@ -7,14 +7,18 @@
 
   <div class="row" *ngIf="parent && (contentType == 'movie' || contentType == 'episodes' || contentType == 'seasons')">
     <div class="col-md-12 col-lg-6">
-      <app-metadatabox [item]="parent" (onTitle)="onTitle($event)"></app-metadatabox>
+      <div class="row">
+        <app-metadatabox [item]="parent" (onTitle)="onTitle($event)"></app-metadatabox>
+      </div>
 
-      <div *ngIf="contentType == 'seasons'">
-        <h3>Seasons</h3>
-        <div *ngIf="!loading && rootDoc">
-          <app-listingbox [doc]="rootDoc" (onOpen)="selectSeasonItem($event)" [itemsPerPage]="itemsPerPage" [highlightItemId]="seasonItemId"></app-listingbox>
+      <div *ngIf="contentType == 'seasons'" class="row">
+        <div class="col">
+          <h3>Seasons</h3>
+          <div *ngIf="!loading && rootDoc">
+            <app-listingbox [doc]="rootDoc" (onOpen)="selectSeasonItem($event)" [itemsPerPage]="itemsPerPage" [highlightItemId]="seasonItemId"></app-listingbox>
+          </div>
+          <div *ngIf="loading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
         </div>
-        <div *ngIf="loading" class="text-center row"><div class="col"><app-spinner></app-spinner></div></div>
       </div>
     </div>
 

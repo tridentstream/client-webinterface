@@ -57,7 +57,7 @@ export class BaseItemComponent implements OnInit {
 }
 
 @Component({
-  selector: '[app-item-table]',
+  selector: 'app-item-table',
   templateUrl: './listing.item.table.component.html',
   styleUrls: ['./listing.component.css'],
 })

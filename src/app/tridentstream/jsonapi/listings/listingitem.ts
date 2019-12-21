@@ -98,6 +98,10 @@ export class ListingItemResourceObject extends ResourceObject {
     return title;
   }
 
+  isOriginalTitle() {
+    return !this.getEmbeddedTitle();
+  }
+
   createDefaultMetadata(): DisplayMetadataResourceObject {
     this.defaultMetadata = new DisplayMetadataResourceObject('metadata_default', `metadata_default_${this.id}`);
     this.defaultMetadata.parse({'attributes': {
