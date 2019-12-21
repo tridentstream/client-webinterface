@@ -1,7 +1,7 @@
-<div class="d-flex">
+<div class="d-sm-flex flex-md-row">
   <div class="pr-3 text-nowrap">{{ item.getTitle() }}</div>
-  <div class="mr-auto text-muted text-truncate"><small *ngIf="!item.isOriginalTitle()">{{ item.attributes['name'] }}</small></div>
-  <div class="pl-2 text-nowrap" ngPreserveWhitespaces>
+  <div class="mr-auto text-muted text-truncate pr-2"><small *ngIf="!item.isOriginalTitle()">{{ item.attributes['name'] }}</small></div>
+  <div class="text-nowrap" ngPreserveWhitespaces>
     <span *ngIf="item.isAvailable">
       <fa-icon [icon]="iconAvailable" tooltip="This is already downloaded and ready to watch"></fa-icon>
     </span>
