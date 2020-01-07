@@ -8,7 +8,9 @@
   <div class="row" *ngIf="parent && (contentType == 'movie' || contentType == 'episodes' || contentType == 'seasons')">
     <div class="col-md-12 col-lg-6">
       <div class="row">
-        <app-metadatabox [item]="parent" (onTitle)="onTitle($event)"></app-metadatabox>
+        <div class="col">
+          <app-metadatabox [item]="parent" (onTitle)="onTitle($event)"></app-metadatabox>
+        </div>
       </div>
 
       <div *ngIf="contentType == 'seasons'" class="row">

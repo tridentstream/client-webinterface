@@ -1,13 +1,11 @@
-<div class="row" #metadataBox [style.height.px]="divHeight">
-  <div class="col">
-    <img [style.max-height.px]="divHeight"
-          (load)="calcCoverHeight()"
-          [src]="(metadata && metadata.cover) || (oldMetadata && oldMetadata.cover) || 'assets/images/placeholder.jpg'"
+<div class="row" #metadataBox>
+  <div class="col-md-6 col-sm-12">
+    <img [src]="(metadata && metadata.cover) || (oldMetadata && oldMetadata.cover) || 'assets/images/placeholder.jpg'"
           class="img-fluid"
           style="margin: 0 auto; width: 100%;" />
   </div>
 
-  <div class="col">
+  <div class="col-md-6 col-sm-12">
     <h4>Plot</h4>
     <p>{{ metadata.plot }}</p>
     <h4>Info</h4>

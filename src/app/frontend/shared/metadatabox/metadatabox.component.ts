@@ -47,12 +47,6 @@ export class MetadataBoxComponent implements OnInit, OnChanges, AfterViewInit {
     this.ngOnInit();
   }
 
-  calcCoverHeight () {
-    if (this.metadataBox.nativeElement.clientHeight > 0) {
-      this.divHeight = this.metadataBox.nativeElement.clientHeight;
-    }
-  }
-
   ngAfterViewInit() {
     if (this.metadata.title) {
       let title = this.metadata.title;
