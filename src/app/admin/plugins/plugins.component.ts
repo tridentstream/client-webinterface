@@ -51,7 +51,7 @@ export class PluginsComponent implements OnInit {
   public remotesearchers: Array<PluginResourceObject>;
 
   public others: Array<SimpleAdminPluginResourceObject>;
-  public othersPluginType = ['metadatahandler', 'bittorrentclient'];
+  public othersPluginType = ['metadatahandler', 'bittorrentclient', 'magnetresolver'];
 
   private adminService: AdminServiceResourceObject;
 

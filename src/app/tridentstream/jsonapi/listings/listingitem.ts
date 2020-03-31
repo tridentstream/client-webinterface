@@ -65,6 +65,9 @@ export class ListingItemResourceObject extends ResourceObject {
     if (metadata.attributes['mediainfo_scene'])
       titleSegments.push('Scene');
 
+    if (metadata.attributes['mediainfo_dual_audio'])
+      titleSegments.push('Dual audio');
+
     if (titleSegments.length > 0 && this.attributes['size'])
       titleSegments.push(filesize(this.attributes['size'], {round: 1}));
 
