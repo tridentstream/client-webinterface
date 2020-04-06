@@ -7,6 +7,8 @@ import { UsersComponent } from './users/users.component';
 import { PluginsComponent } from './plugins/plugins.component';
 import { ConfigsComponent } from './configs/configs.component';
 import { AdvancedPluginsComponent } from './advancedplugins/advancedplugins.component';
+import { ExternalpluginsComponent } from './externalplugins/externalplugins.component';
+
 
 const routes: Routes = [
   {
@@ -24,6 +26,10 @@ const routes: Routes = [
       {
         path: 'plugins',
         component: PluginsComponent
+      },
+      {
+        path: 'externalplugins',
+        component: ExternalpluginsComponent
       },
       {
         path: 'configs',

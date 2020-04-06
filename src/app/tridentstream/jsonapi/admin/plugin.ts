@@ -25,7 +25,7 @@ export class PluginResourceObject extends ResourceObject {
 
   reload() {
     let url = this.links['self'] + 'reload/';
-    return post(this.document.http, url, );
+    return post(this.document.http, url);
   }
 }
 

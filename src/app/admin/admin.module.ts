@@ -26,6 +26,7 @@ import { UsersComponent } from './users/users.component';
 import { JsonschemaComponent } from './jsonschema/jsonschema.component';
 import { ConfigsComponent } from './configs/configs.component';
 import { AdvancedPluginsComponent } from './advancedplugins/advancedplugins.component';
+import { ExternalpluginsComponent } from './externalplugins/externalplugins.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { AdvancedPluginsComponent } from './advancedplugins/advancedplugins.comp
     ConfigsComponent,
     PluginSectionHeaderComponent,
     AdvancedPluginsComponent,
+    ExternalpluginsComponent,
   ]
 })
 export class AdminModule { }

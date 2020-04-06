@@ -122,7 +122,7 @@ export class AdvancedPluginsComponent implements OnInit {
     plugin.create_or_update().subscribe(
       (p) => this.reloadPlugins(p.id),
       (err) => this.toastr.error(`Failed to save plugin, are you sure the name is unique?`)
-    ); // TODO: catch http errors
+    );
   }
 
   deletePlugin(plugin: PluginResourceObject) {
@@ -136,7 +136,6 @@ export class AdvancedPluginsComponent implements OnInit {
 
   reloadAllPlugins() {
     this.toastr.success(`Reloading all plugins`);
-    console.log(this.adminService);
     this.adminService.reload().subscribe();
   }
 

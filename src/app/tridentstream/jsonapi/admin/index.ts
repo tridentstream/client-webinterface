@@ -1,4 +1,6 @@
 export * from './admin';
+export * from './externalplugin';
+export * from './loadedplugin';
 export * from './plugin';
 export * from './pluginbase';
 export * from './user';

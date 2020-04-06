@@ -4,6 +4,8 @@ import { map, flatMap } from 'rxjs/operators';
 import { JSON_TYPES, JsonApiDocument, ResourceObject } from '../jsonapi';
 import { ServiceResourceObject } from '../core/service';
 import { post } from '../../helpers';
+import { ExternalPluginResourceObject } from './externalplugin';
+import { LoadedPluginResourceObject } from './loadedplugin';
 import { PluginBaseResourceObject } from './pluginbase';
 import { PluginResourceObject } from './plugin';
 import { UserResourceObject } from './user';
@@ -35,6 +37,14 @@ export class AdminServiceResourceObject extends ServiceResourceObject {
     return this.getGeneric('admin_plugin', 'plugin');
   }
 
+  getExternalPlugins(): Observable<Array<ExternalPluginResourceObject>> {
+    return this.getGeneric('admin_externalplugin', 'externalplugin');
+  }
+
+  getLoadedPlugins(): Observable<Array<LoadedPluginResourceObject>> {
+    return this.getGeneric('admin_loadedplugin', 'loadedplugin');
+  }
+
   getUsers(): Observable<Array<UserResourceObject>> {
     return this.getGeneric('admin_user', 'user');
   }
@@ -60,6 +70,12 @@ export class AdminServiceResourceObject extends ServiceResourceObject {
 
   reload() {
     return this.getUrl('admin_plugin_reload', 'plugin').pipe(
+      flatMap((url) => post(this.document.http, url))
+    )
+  }
+
+  restart_server() {
+    return this.getUrl('admin_externalplugin_restart_server', 'externalplugin').pipe(
       flatMap((url) => post(this.document.http, url))
     )
   }

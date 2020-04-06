@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1>External Plugins</h1>
+    </div>
+  </div>
+
+  <div class="row mb-1">
+    <div class="col">
+      <button class="btn btn-danger" (click)="restartServer()">Restart Tridentstream</button>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <h3 class="mt-4">Available plugins</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div class="mb-2">
+          <button [disabled]="uploadingPlugins" class="btn btn-success mr-1" (click)="pluginUploader.click()">
+            Upload plugins<fa-icon *ngIf="uploadingPlugins" class="ml-2" [icon]="iconUploading" [pulse]="true"></fa-icon>
+          </button>
+          <input hidden multiple type="file" #pluginUploader (change)="uploadPlugins($event)"/>
+        </div>
+
+        <div class="card mb-2" *ngFor="let plugin of externalPlugins">
+          <div class="card-header">
+            Name: {{ plugin.attributes['name'] }} - Version: {{ plugin.attributes['version'] }}
+          </div>
+          <div class="card-body">
+            <div class="card-text mb-2">
+              <h5>Description</h5>
+              {{ plugin.attributes['description'] }}
+            </div>
+            <div class="card-text mb-2">
+              Keywords: {{ plugin.attributes['keywords']?.join(', ') || 'No keywords found' }}
+            </div>
+            <button class="btn btn-primary mx-1" (click)="enableExternalPlugin(plugin)">Enable</button>
+            <button class="btn btn-danger mx-1" (click)="deleteExternalPlugin(plugin)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <h3 class="mt-4">Enabled plugins</h3>
+      <app-spinner *ngIf="loading"></app-spinner>
+      <div *ngIf="!loading">
+        <div class="card mb-2" *ngFor="let plugin of loadedPlugins">
+          <div class="card-header">
+            Name: {{ plugin.attributes['name'] }} - Version: {{ plugin.attributes['version'] }}
+          </div>
+          <div class="card-body">
+            <div class="card-text mb-2">
+              <h5>Description</h5>
+              {{ plugin.attributes['description'] }}
+            </div>
+            <div class="card-text mb-2">
+              Loaded: {{ plugin.attributes['loaded'] && 'Yes' || 'No' }}<br />
+              Plugin file found: {{ plugin.attributes['orphaned'] && 'No' || 'Yes' }}<br />
+              Currently in use: {{ plugin.attributes['in_use'] && 'Yes' || 'No' }}<br />
+            </div>
+            <button [disabled]="plugin.attributes['in_use']" class="btn btn-danger mx-1" (click)="uninstallLoadedPlugin(plugin)">Uninstall</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #restartingModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="d-flex justify-content-center align-items-center flex-column">
+          <div class="p-1"><h4>Restarting server...</h4></div>
+          <div class="p-1"><app-spinner></app-spinner></div>
+          <div class="p-1">checking liveliness attempt {{ countAttempt }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
