@@ -105,9 +105,9 @@ export class ExternalpluginsComponent implements OnInit {
   enableExternalPlugin(plugin: ExternalPluginResourceObject) {
     this.loading = true;
     plugin.install().pipe(
-      tap(() => this.toastr.success('Plugin uninstalled')),
+      tap(() => this.toastr.success('Plugin enabled')),
       catchError(() => {
-        this.toastr.error('Failed to uninstall plugin');
+        this.toastr.error('Failed to enable plugin');
         return of(null);
       }),
     ).subscribe(() => this.reloadPlugins())
